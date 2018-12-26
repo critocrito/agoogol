@@ -2,7 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as s]
             [org.httpkit.client :as http]
-            [net.cgrand.enlive-html :as html]))
+            [agoogol.successes :as success]))
 
 (defn make-http-call
   "Handle a single HTTP and parse inputs and outputs to and from JSON."
@@ -26,10 +26,6 @@
   (let [r (rand-int (- till from))]
     (* (+ from r) 1000)))
 
-(defn has-results
-  [text]
-  (> 0 (count (html/select (html/html-resource (java.io.StringReader. text)) [:div.srg :> :div]))))
-
 (defn writeln
   [writer elems]
   (let [line (s/join "," elems)]
@@ -39,7 +35,11 @@
       (.flush))))
 
 (defn run-experiment
-  [input output & {:keys [transformation min-sleep max-sleep] :or {transformation identity min-sleep 5 max-sleep 15}}]
+  [input output & {:keys [success-test transformation min-sleep max-sleep]
+                   :or {success-test success/has-results
+                        transformation identity
+                        min-sleep 5
+                        max-sleep 15}}]
   (with-open [reader (io/reader input)
               writer (io/writer output)]
     (do
@@ -50,7 +50,7 @@
                 term (transformation input)
                 success (->> term
                              google
-                             has-results)]
+                             success-test)]
             (do
               (writeln writer [input term success])
               (println (str "Experiment for '" term "' was " (when-not success "un") "successful. Sleeping for " sleep " ms."))
