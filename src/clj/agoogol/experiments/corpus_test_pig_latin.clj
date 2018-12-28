@@ -1,7 +1,7 @@
 ;;; Experiment 3
 (ns agoogol.experiments.corpus-test-pig-latin
   (:require [agoogol.transformations :refer [pig-latin]]
-            [agoogol.core :refer [run-experiment google]]))
+            [agoogol.core :refer [run-experiment]]))
 
 (def input "./inputs/corpus-test.txt")
 (def output "./outputs/corpus-test-pig-latin.csv")

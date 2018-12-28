@@ -11,6 +11,4 @@
              :main-opts ["-m" "depot.outdated.main"]}
   :experiment1 {:main-opts ["-m" "agoogol.experiments.alphabet"]}
   :experiment2 {:main-opts ["-m" "agoogol.experiments.corpus-test"]}
-  :experiment3 {:main-opts ["-m" "agoogol.experiments.corpus-test-pig-latin"]}
-  :experiment4 {:main-opts ["-m" "agoogol.experiments.corpus-test-did-you-mean"]}
-  :experiment5 {:main-opts ["-m" "agoogol.experiments.corpus-test-pig-latin-did-you-mean"]}}}
+  :experiment3 {:main-opts ["-m" "agoogol.experiments.corpus-test-pig-latin"]}}}
