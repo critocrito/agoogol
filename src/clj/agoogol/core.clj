@@ -17,9 +17,8 @@
   (let [request {:method :get
                  :user-agent "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36"
                  :url "https://google.com/search"
-                 :query-params {"q" term}}
-        response (make-http-call request)]
-    response))
+                 :query-params {"q" term}}]
+    (make-http-call request)))
 
 (defn random-sleep
   [from till]
@@ -45,9 +44,11 @@
         (doseq [input inputs]
           (let [sleep (random-sleep min-sleep max-sleep)
                 term (transformation input)
-                success (->> term
-                             google
-                             success?)]
+                success (try
+                          (success? (google term))
+                          (catch Exception e
+                            (println (str "caught exception for term `" term "`: " (.getMessage e)))
+                            false))]
             (do
               (writeln writer [input term success])
               (println (str "Experiment for '" term "' was " (when-not success "un") "successful. Sleeping for " sleep " ms."))
