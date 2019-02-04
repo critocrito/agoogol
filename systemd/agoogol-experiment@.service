@@ -1,0 +1,12 @@
+[Unit]
+Description=Run %i experiment for Agoogol
+OnFailure=status-email-archive@%n.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh /home/agoogol/agoogol/bin/run-experiment.sh %i
+User=agoogol
+WorkingDirectory=/home/agoogol/agoogol
+
+[Install]
+RequiredBy=default.target
