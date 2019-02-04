@@ -39,10 +39,13 @@
   (with-open [reader (io/reader input)
               writer (io/writer output)]
     (do
-      (writeln writer ["input" "term" "success"])
+      (writeln writer ["input" "term" "success" "created_at"])
       (let [inputs (line-seq reader)]
         (doseq [input inputs]
           (let [sleep (random-sleep min-sleep max-sleep)
+                now (.format
+                     (java.text.SimpleDateFormat. "yyyy-MM-dd'T'HH:mm:ssZ")
+                     (new java.util.Date))
                 term (transformation input)
                 success (try
                           (success? (google term))
@@ -50,6 +53,6 @@
                             (println (str "caught exception for term `" term "`: " (.getMessage e)))
                             false))]
             (do
-              (writeln writer [input term success])
+              (writeln writer [input term success now])
               (println (str "Experiment for '" term "' was " (when-not success "un") "successful. Sleeping for " sleep " ms."))
               (Thread/sleep sleep))))))))
